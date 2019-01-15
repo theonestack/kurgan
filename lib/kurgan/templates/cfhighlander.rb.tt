@@ -1,0 +1,17 @@
+CfhighlanderTemplate do
+  Name '<%= name %>'
+  Description "<%= config[:description] %>"
+
+  <%- if config[:parameters].any? -%>
+  Parameters do
+    <%- config[:parameters].each do |param| -%>
+    ComponentParam '<%= param[:name] %>', '<%= param[:default] %>', <%= param[:options] %>
+    <%- end -%>
+  end
+  <%- end -%>
+
+  <%- config[:components].each do |comp| -%>
+  Component template: '<%= comp[:template] %>', name: '<%= comp[:name] %>'
+  <%- end if config[:components].any? -%>
+
+end

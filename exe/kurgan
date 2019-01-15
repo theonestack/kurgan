@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "kurgan"
+
+Kurgan::Cli.start( ARGV )
