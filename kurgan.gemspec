@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "kurgan"
   spec.version       = Kurgan::VERSION
   spec.authors       = ["Guslington"]
-  spec.email         = ["guslington@gmail.com"]
+  spec.email         = ["theonestackcfhighlander@gmail.com"]
 
   spec.summary       = %q{Manage a cfhighalnder project}
   spec.description   = %q{Manage a cfhighalnder project}

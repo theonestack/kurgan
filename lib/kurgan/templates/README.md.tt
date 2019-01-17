@@ -1,1 +1,34 @@
-# CfHighlander
+# <%= name %> CfHighlander project
+---
+
+## Cfhighlander Setup
+
+install cfhighlander [gem](https://github.com/theonestack/cfhighlander)
+
+```bash
+gem install cfhighlander
+```
+
+or via docker
+
+```bash
+docker pull theonestack/cfhighlander
+```
+
+compiling the templates
+
+```bash
+cfcompile <%= name %>
+```
+
+compiling with the vaildate fag to validate the templates
+
+```bash
+cfcompile <%= name %> --validate
+```
+
+publish the templates to s3
+
+```bash
+cfpublish <%= name %> --version latest
+```

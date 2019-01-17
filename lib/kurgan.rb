@@ -2,8 +2,7 @@ require "thor"
 require "kurgan/version"
 require "kurgan/init"
 require "kurgan/component"
-
-require "kurgan/projects/ecs"
+require "kurgan/add"
 
 module Kurgan
   class Cli < Thor
@@ -18,13 +17,12 @@ module Kurgan
     register Kurgan::Init, 'project', 'project [name]', 'Generates a new CfHighalnder project'
     tasks["project"].options = Kurgan::Init.class_options
 
-    # Generats new ecs project
-    register Kurgan::Ecs, 'ecs', 'ecs [name]', 'Generates a new CfHighalnder ECS project'
-    tasks["ecs"].options = Kurgan::Ecs.class_options
-
     # Generates a new component
     register Kurgan::Component, 'component', 'component [name]', 'Generates a new CfHighalnder component'
     tasks["component"].options = Kurgan::Component.class_options
+
+    register Kurgan::Add, 'add', 'add [component]', 'Adds a new component to an existing project'
+    tasks["add"].options = Kurgan::Component.class_options
 
   end
 end
