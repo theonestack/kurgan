@@ -1,0 +1,90 @@
+{
+  "components": [
+    {
+      "name": "aurora-mysql",
+      "latest": "1.2.0",
+      "versions": [
+        "1.2.0",
+        "1.1.0",
+        "1.0.0"
+      ],
+      "services": [
+        "rds"
+      ]
+    },
+    {
+      "name": "aurora-postgres",
+      "latest": "1.1.1",
+      "versions": [
+        "1.1.1",
+        "1.1.0",
+        "1.0.0"
+      ],
+      "services": [
+        "rds"
+      ]
+    },
+    {
+      "name": "rds-postgres",
+      "latest": "1.1.0",
+      "versions": [
+        "1.1.0",
+        "1.0.0"
+      ],
+      "services": [
+        "rds"
+      ]
+    },
+    {
+      "name": "rds-mysql",
+      "latest": "1.0.0",
+      "versions": [
+        "1.0.0"
+      ],
+      "services": [
+        "rds"
+      ]
+    },
+    {
+      "name": "ecs",
+      "latest": "1.5.0",
+      "versions": [
+        "1.5.0",
+        "1.4.0",
+        "1.3.0",
+        "1.2.0",
+        "1.1.1",
+        "1.1.0",
+        "1.0.0"
+      ],
+      "services": [
+        "ecs"
+      ]
+    },
+    {
+      "name": "ecs-service",
+      "latest": "1.7.4",
+      "versions": [
+        "1.7.4",
+        "1.7.3",
+        "1.7.2",
+        "1.7.1",
+        "1.7.0"
+      ],
+      "services": [
+        "ecs"
+      ]
+    },
+    {
+      "name": "fargate",
+      "latest": "1.0.1",
+      "versions": [
+        "1.0.1",
+        "1.0.0"
+      ],
+      "services": [
+        "ecs"
+      ]
+    }
+  ]
+}

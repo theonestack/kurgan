@@ -14,20 +14,20 @@ module Kurgan
 
     def set_template_parameters
       @parameters = [
-        { name: 'Environment', default: 'dev', options: 'isGlobal: true' },
+        { name: 'EnvironmentName', default: 'dev', options: 'isGlobal: true' },
         { name: 'EnvironmentType', default: 'development', options: "allowedValues: ['development','production'], isGlobal: true" }
       ]
     end
 
     def create_cfndsl_template
-      template('templates/cfndsl.rb.tt', "#{@dir}/#{name}.cfndsl.yaml")
+      template('templates/cfndsl.rb.tt', "#{@dir}/#{name}.cfndsl.rb")
     end
 
     def copy_licence
       if yes?("Use MIT license?")
         copy_file "templates/MITLICENSE", "#{@dir}/LICENSE"
       else
-        say "Not creating a license", :yellow
+        say "Skipping license", :yellow
       end
     end
 
