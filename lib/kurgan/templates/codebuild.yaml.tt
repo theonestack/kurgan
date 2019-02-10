@@ -1,0 +1,13 @@
+version: 0.2
+
+env:
+  variables:
+    PROJECT_NAME: '<%= @name %>'
+
+phases:
+  install:
+    commands:
+      - gem install cfhighlander
+  build:
+    commands:
+      - cfcompile --validate

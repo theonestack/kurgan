@@ -51,14 +51,14 @@ module Kurgan
 
     def ci_init
       if yes?("Setup a CI pipeline?")
-        type = ask "CI flavour", limited_to: ['jenkins', 'travis-ci', 'codepipeline']
+        type = ask "CI flavour", limited_to: ['jenkins', 'travis-ci', 'codebuild']
         case type
         when 'jenkins'
           template('templates/Jenkinsfile.tt', "#{@dir}/Jenkinsfile")
         when 'travis-ci'
           template('templates/travis-ci.yml.tt', "#{@dir}/.travis-ci.yml")
-        when 'codepipeline'
-          say 'AWS CodePipeline is not supported yet...', :red
+        when 'codebuild'
+          template('templates/codebuild.yaml.tt', "#{@dir}/.codebuild.yaml")
         end
       else
         say "Skipping CI setup", :yellow
