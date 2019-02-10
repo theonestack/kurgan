@@ -56,7 +56,7 @@ module Kurgan
         when 'jenkins'
           template('templates/Jenkinsfile.tt', "#{@dir}/Jenkinsfile")
         when 'travis-ci'
-          template('templates/travis-ci.yaml.tt', "#{@dir}/.travis-ci.yaml")
+          template('templates/travis-ci.yml.tt', "#{@dir}/.travis-ci.yml")
         when 'codepipeline'
           say 'AWS CodePipeline is not supported yet...', :red
         end
