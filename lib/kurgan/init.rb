@@ -51,12 +51,12 @@ module Kurgan
 
     def ci_init
       if yes?("Setup a CI pipeline?")
-        type = ask "CI flavour", limited_to: ['jenkins', 'travis-ci', 'codebuild']
+        type = ask "CI flavour", limited_to: ['jenkins', 'travis', 'codebuild']
         case type
         when 'jenkins'
           template('templates/Jenkinsfile.tt', "#{@dir}/Jenkinsfile")
         when 'travis-ci'
-          template('templates/travis-ci.yml.tt', "#{@dir}/.travis-ci.yml")
+          template('templates/travis.yml.tt', "#{@dir}/.travis.yml")
         when 'codebuild'
           template('templates/codebuild.yaml.tt', "#{@dir}/.codebuild.yaml")
         end
