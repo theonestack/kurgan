@@ -1,5 +1,4 @@
-# <%= name %> CfHighlander project
----
+# <%= name %> CfHighlander <%= @type %>
 
 ## Cfhighlander Setup
 
@@ -14,12 +13,16 @@ or via docker
 ```bash
 docker pull theonestack/cfhighlander
 ```
+<%- if @type == 'component' -%>
+## Testing Components
 
-compiling the templates
+Running the tests
 
 ```bash
-cfcompile <%= name %>
+cfhighlander cftest <%= name %>
 ```
+<%- elsif @type == 'project' -%>
+## Compiling the project
 
 compiling with the vaildate fag to validate the templates
 
@@ -32,3 +35,4 @@ publish the templates to s3
 ```bash
 cfpublish <%= name %> --version latest
 ```
+<%- end -%>

@@ -1,6 +1,15 @@
 language: ruby
 rvm:
   - 2.5
+install:
+  - gem install cfhighlander cfn-nag
+before_script:
+  - cfndsl -u
+<%- if @type == 'component' -%>
+script:
+  - cfhighlander cftest
+  - cfn_nag_scan -i out/tests
+<%- elsif @type == 'project' -%>
 script:
   - gem install cfhighlander
-  - if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then cfcompile ; else cfcompile --validate; fi%
+<%- end -%>

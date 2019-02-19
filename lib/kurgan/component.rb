@@ -3,6 +3,10 @@ require 'kurgan/init'
 module Kurgan
   class Component < Kurgan::Init
 
+    def set_type
+      @type = 'component'
+    end
+
     def set_directory
       @dir = ask "directory name ", default: "hl-component-#{name}"
       empty_directory @dir
@@ -23,19 +27,20 @@ module Kurgan
       template('templates/cfndsl.rb.tt', "#{@dir}/#{name}.cfndsl.rb")
     end
 
+    def create_empty_test
+      if yes?("Setup sample test?")
+        empty_directory "#{@dir}/tests"
+        template('templates/sns_topic.test.yaml.tt', "#{@dir}/tests/sns_topic.test.yaml")
+      else
+        say "Skipping tests", :yellow
+      end
+    end
+
     def copy_licence
       if yes?("Use MIT license?")
         copy_file "templates/MITLICENSE", "#{@dir}/LICENSE"
       else
         say "Skipping license", :yellow
-      end
-    end
-
-    def create_travis_config
-      if yes?("Use Travis-ci?")
-        copy_file "templates/travis.yml.tt", "#{@dir}/travis-ci.yml"
-      else
-        say "skipping travis", :yellow
       end
     end
 

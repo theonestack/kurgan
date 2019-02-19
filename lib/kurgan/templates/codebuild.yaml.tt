@@ -7,7 +7,13 @@ env:
 phases:
   install:
     commands:
-      - gem install cfhighlander
+      - gem install cfhighlander cfn-nag
   build:
     commands:
+<%- if @type == 'component' -%>
+      - cfhighlander cftest
+      - cfn_nag_scan -i out/tests
+<%- elsif @type == 'project' -%>
       - cfcompile --validate
+      - cfn_nag_scan -i out/yaml
+<%- end -%>

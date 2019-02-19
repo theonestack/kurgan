@@ -3,16 +3,42 @@ pipeline {
   environment {
     AWS_REGION = 'us-east-1'
     PROJECT_NAME = '<%= @name %>'
+    VERSION = '0.1.0'
   }
 
   agent {
     docker {
-        image 'theonestack/cfhighlander'
+      image 'theonestack/cfhighlander'
     }
   }
 
   stages {
 
+<%- if @type == 'component' -%>
+    stage('cftest') {
+      steps {
+        sh 'cfndsl -u'
+        sh "cfhighlander cftest -r xml"
+      }
+      post {
+        always {
+          junit 'reports/report.xml'
+        }
+      }
+    }
+
+    stage('cfn nag') {
+      agent {
+        docker {
+          image 'base2/cfn-nag'
+          reuseNode true
+        }
+      }
+      steps {
+        sh 'cfn_nag_scan -i out/tests'
+      }
+    }
+<%- elsif @type == 'project' -%>
     stage('Compile and validate templates') {
       steps {
         sh 'cfndsl -u'
@@ -20,20 +46,24 @@ pipeline {
       }
     }
 
-    stage('Publish templates to S3') {
-      steps {
-        script {
-          env['VERSION'] = ${env.BRANCH_NAME}-${env.SHORT_COMMIT}
+    stage('cfn nag') {
+      agent {
+        docker {
+          image 'base2/cfn-nag'
+          reuseNode true
         }
-        sh "cfpublish ${PROJECT_NAME} --version ${VERSION}"
+      }
+      steps {
+        sh 'cfn_nag_scan -i out/yaml'
       }
     }
 
-    stage('Deploy') {
+    stage('Publish templates') {
       steps {
-        println "Deploying ${env.PROJECT_NAME} version ${env.VERSION}"
+        sh "cfpublish ${env.PROJECT_NAME} --version ${env.VERSION}"
       }
     }
+<%- end -%>
 
   }
 }
