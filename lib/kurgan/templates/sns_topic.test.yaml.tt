@@ -1,6 +1,0 @@
-test_metadata:
-  type: config
-  name: sns_topic
-  description: test for the default sns topic
-
-topic_name: sample-test

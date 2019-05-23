@@ -2,7 +2,7 @@ module Kurgan
   class Add < Thor::Group
     include Thor::Actions
 
-    argument :template
+    argument :component
 
     class_option :name, aliases: :n, type: :string
     class_option :version, aliases: :v, type: :string
@@ -15,11 +15,11 @@ module Kurgan
     end
 
     def get_component_name
-      @name = options[:name] || template
+      @name = options[:name] || component
     end
 
     def get_template_version
-      @template = options[:version] ? "#{template}@#{options[:version]}" : template
+      @template = options[:version] ? "#{component}@#{options[:version]}" : component
       say "adding #{@template} to the #{@cfhighlander_template.split('.')[0]} project"
     end
 

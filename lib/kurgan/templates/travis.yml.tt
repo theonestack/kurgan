@@ -7,9 +7,9 @@ before_script:
   - cfndsl -u
 <%- if @type == 'component' -%>
 script:
-  - cfhighlander cftest
+  - if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then cfhighlander cftest --no-validate; else cfhighlander cftest; fi
   - cfn_nag_scan -i out/tests
 <%- elsif @type == 'project' -%>
 script:
-  - gem install cfhighlander
+  - cfcompile
 <%- end -%>

@@ -27,13 +27,9 @@ module Kurgan
       template('templates/cfndsl.rb.tt', "#{@dir}/#{name}.cfndsl.rb")
     end
 
-    def create_empty_test
-      if yes?("Setup sample test?")
-        empty_directory "#{@dir}/tests"
-        template('templates/sns_topic.test.yaml.tt', "#{@dir}/tests/sns_topic.test.yaml")
-      else
-        say "Skipping tests", :yellow
-      end
+    def create_default_config_test
+      @test_name = 'default'
+      template('templates/test.yaml.tt', "#{@dir}/tests/#{@test_name}.test.yaml")
     end
 
     def copy_licence

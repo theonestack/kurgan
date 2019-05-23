@@ -5,6 +5,7 @@ require 'kurgan/globals'
 require "kurgan/init"
 require "kurgan/component"
 require "kurgan/add"
+require "kurgan/test"
 require "kurgan/list"
 
 module Kurgan
@@ -24,6 +25,9 @@ module Kurgan
 
     register Kurgan::Add, 'add', 'add [component]', 'Adds a new component to an existing CfHighlander project'
     tasks["add"].options = Kurgan::Add.class_options
+
+    register Kurgan::Test, 'test', 'test [name]', 'Create a new test case for a component'
+    tasks["test"].options = Kurgan::Test.class_options
 
     desc "list", "List available components and latest version from theonestack github"
     method_option :filter, aliases: '-f', type: :string, desc: "filter components by service type"
