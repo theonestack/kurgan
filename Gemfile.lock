@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kurgan (0.1.4)
+    kurgan (0.2.0)
       thor (~> 0.19)
 
 GEM
@@ -14,9 +14,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler (~> 2.0)
   kurgan!
   rake (~> 10.0)
 
 BUNDLED WITH
-   1.16.1
+   2.0.1
