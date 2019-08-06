@@ -24,7 +24,7 @@ cfhighlander cftest <%= name %>
 <%- elsif @type == 'project' -%>
 ## Compiling the project
 
-compiling with the vaildate fag to validate the templates
+compiling with the validate tag to validate the templates
 
 ```bash
 cfcompile <%= name %> --validate
