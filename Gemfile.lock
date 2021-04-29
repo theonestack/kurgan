@@ -7,7 +7,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    rake (10.5.0)
+    rake (13.0.1)
     thor (0.20.3)
 
 PLATFORMS
@@ -16,7 +16,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.0)
   kurgan!
-  rake (~> 10.0)
+  rake (~> 13.0)
 
 BUNDLED WITH
    2.0.1
