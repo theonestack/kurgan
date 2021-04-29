@@ -1,0 +1,29 @@
+require 'yaml'
+
+describe 'compiled component' do
+  
+  context 'cftest' do
+    it 'compiles test' do
+      expect(system("cfhighlander cftest #{@validate} --tests tests/<%= test_name %>.test.yaml")).to be_truthy
+    end      
+  end
+  
+  let(:template) { YAML.load_file("#{File.dirname(__FILE__)}/../out/tests/<%= test_name %>/<%= component %>.compiled.yaml") }
+  
+  context 'Resources' do
+    <% cfn['Resources'].each do |resource, details| %>
+    let(:properties) { template["Resources"][<%= resource %>]["Properties"] }
+    let(:type) {template["Resources"][<%= resource %>]["Type"]}
+
+    it "is of type <%= details['Type'] %>" do
+        expect(type).to eq(details['Type'])
+    end
+    <% details['Properties'].each do |property, value| %>
+    it "has property <%= property %>" do
+        expect(properties[<%= property %>']).to eq(<%= value.is_a?(String) ? "\"#{value}\"" : value %>)
+    end
+    <% end %>
+    <% end %>
+  end
+
+end
