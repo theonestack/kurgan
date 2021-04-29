@@ -55,8 +55,10 @@ module Kurgan
 
     def ci_init
       if yes?("Setup a CI pipeline?")
-        ci = ask "CI flavour", limited_to: ['jenkins', 'travis', 'codebuild']
+        ci = ask "CI flavour", limited_to: ['github', 'jenkins', 'travis', 'codebuild']
         case ci
+        when 'github'
+          template('templates/github_actions.yaml.tt', "#{@dir}/.github/workflows/rspec.yaml")
         when 'jenkins'
           template('templates/Jenkinsfile.tt', "#{@dir}/Jenkinsfile")
         when 'travis'
