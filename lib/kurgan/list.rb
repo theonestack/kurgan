@@ -1,59 +1,24 @@
-require 'open-uri'
-require 'fileutils'
+require "thor"
+require 'faraday'
+require 'json'
+require 'terminal-table'
 
 module Kurgan
-  class List
+  class List < Thor::Group
+    include Thor::Actions
 
-    def initialize(options)
-      @filter = options[:filter]
-      @component = options[:component]
-      if options[:update] || !File.exists?(Kurgan.components_file)
-        update_component_list
-      end
-      content = File.read(Kurgan.components_file)
-      @components = JSON.parse(content)['components']
+    def get_repos
+      url = 'https://api.github.com/orgs/theonestack/repos'
+      response = Faraday.get(url, {type: 'public', per_page: 100}, {'Accept' => 'Accept: application/vnd.github.v3+json'})
+      repos = JSON.parse(response.body, symbolize_names: true)
+      @hl_repos = repos.select {|repo| repo[:name].start_with?('hl-component')}.map {|repo| [repo[:name], repo[:url], repo[:updated_at]]}
     end
 
-    def execute
-      puts "\n\s\s============================="
-      puts "\s\s## CfHighlander Components ##"
-      puts "\s\s=============================\n\n"
-      if @component
-        return component
-      elsif @filter
-        return filter
-      else
-        return all
-      end
-    end
-
-    def component
-      components = @components.select { |comp| comp['name'].include? @component }
-      abort "no match for component #{@component}" if !components.any?
-      components.each { |comp| puts "\s\s\s\s#{comp['name']} (#{comp['versions'].join(', ')})" }
-    end
-
-    def filter
-      components = @components.select { |comp| comp['filter'].include? @filter }
-      abort "no match for filter #{@filter}" if !components.any?
-      components.each { |comp| format(comp['name'],comp['latest']) }
-    end
-
-    def all
-      @components.each { |comp| format(comp['name'],comp['latest']) }
-    end
-
-    def format(name,version)
-      version = version != "" ? version : 'latest'
-      puts "\s\s\s\s#{name}@#{version}"
-    end
-
-    def update_component_list
-      puts "Updating components list"
-      FileUtils.mkdir_p File.dirname(Kurgan.components_file)
-      content = open('https://s3-ap-southeast-2.amazonaws.com/cfhighlander-component-specification/components.json').read
-      File.open(Kurgan.components_file, 'w') { |f| f.puts content }
-      puts "Succesfully updated components list #{Kurgan.components_file}"
+    def display
+      puts Terminal::Table.new( 
+        :headings => ['Component', 'Git URL', 'Last Updated'], 
+        :rows => @hl_repos.sort
+      )
     end
 
   end

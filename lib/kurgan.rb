@@ -33,15 +33,9 @@ module Kurgan
     register Kurgan::Test, 'test', 'test [name]', 'Create a new test case for a component'
     tasks["test"].options = Kurgan::Test.class_options
 
-    desc "list", "List available components and latest version from theonestack github"
-    method_option :filter, aliases: '-f', type: :string, desc: "filter components by service type"
-    method_option :component, aliases: '-c', type: :string, desc: "list all versions for matched components"
-    method_option :update, aliases: '-u', type: :boolean, lazy_default: true, default: false, desc: "Update components list"
-    def list
-      cmd = Kurgan::List.new(options)
-      cmd.execute
-    end
 
+    register Kurgan::List, 'list', 'list', 'list all components in the onestack'
+    tasks["list"].options = Kurgan::List.class_options
 
   end
 end
