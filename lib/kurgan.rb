@@ -7,6 +7,7 @@ require "kurgan/component"
 require "kurgan/add"
 require "kurgan/test"
 require "kurgan/list"
+require "kurgan/extend"
 
 module Kurgan
   class Cli < Thor
@@ -25,6 +26,9 @@ module Kurgan
 
     register Kurgan::Add, 'add', 'add [component]', 'Adds a new component to an existing CfHighlander project'
     tasks["add"].options = Kurgan::Add.class_options
+
+    register Kurgan::Extend, 'extend', 'extend [component]', 'Generates a files to extend a component in a CfHighlander project'
+    tasks["extend"].options = Kurgan::Extend.class_options
 
     register Kurgan::Test, 'test', 'test [name]', 'Create a new test case for a component'
     tasks["test"].options = Kurgan::Test.class_options

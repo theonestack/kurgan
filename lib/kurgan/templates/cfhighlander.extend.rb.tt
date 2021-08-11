@@ -1,0 +1,4 @@
+CfhighlanderTemplate do
+  Name '<%= config[:name] %>'
+  Extends '<%= config[:template] %>'
+end
