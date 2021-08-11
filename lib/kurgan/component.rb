@@ -27,6 +27,10 @@ module Kurgan
       template('templates/cfndsl.rb.tt', "#{@dir}/#{name}.cfndsl.rb")
     end
 
+    def create_readme
+      template "templates/README.md.component.tt", "#{@dir}/README.md"
+    end
+
     def create_default_config_test
       @test_name = 'default'
       template('templates/test.yaml.tt', "#{@dir}/tests/#{@test_name}.test.yaml")

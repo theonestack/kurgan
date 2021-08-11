@@ -43,11 +43,14 @@ module Kurgan
       template 'templates/config.yaml.tt', "#{@dir}/#{name}.config.yaml"
     end
 
+    def create_readme
+      template "templates/README.md.project.tt", "#{@dir}/README.md"
+    end
+
     def git_init
       if yes?("git init project?")
         run "git init #{@dir}"
         template 'templates/gitignore.tt', "#{@dir}/.gitignore"
-        template "templates/README.md.tt", "#{@dir}/README.md"
       else
         say "Skipping git init", :yellow
       end
@@ -55,14 +58,13 @@ module Kurgan
 
     def ci_init
       if yes?("Setup a CI pipeline?")
-        ci = ask "CI flavour", limited_to: ['github', 'jenkins', 'travis', 'codebuild']
+        ci = ask "CI flavour", limited_to: ['github', 'jenkins', 'codebuild']
         case ci
         when 'github'
           template('templates/github_actions.yaml.tt', "#{@dir}/.github/workflows/rspec.yaml")
+          insert_into_file "README.md", "![cftest](https://github.com/theonestack/hl-component-#{name}/actions/workflows/rspec.yaml/badge.svg)", :after => /#/
         when 'jenkins'
           template('templates/Jenkinsfile.tt', "#{@dir}/Jenkinsfile")
-        when 'travis'
-          template('templates/travis.yml.tt', "#{@dir}/.travis.yml")
         when 'codebuild'
           template('templates/codebuild.yaml.tt', "#{@dir}/.codebuild.yaml")
         end
