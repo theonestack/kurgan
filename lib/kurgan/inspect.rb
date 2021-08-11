@@ -18,18 +18,11 @@ module Kurgan
 
     def get_components
       cfhighlander_file = File.read(@cfhighlander_rb)
-      raw_components = cfhighlander_file.scan(/Component\s.*?do/m)
+      raw_components = cfhighlander_file.scan(/template:\s?(.*?)\s/).flatten
       
-      @components = raw_components.map do |comp|
-        template_str = comp.match(/(?<=template:)\s?('|").*?('|")/)
-        template = template_str[0].strip.gsub(/("|')/, '').split(/(@|#)/)
-        name = comp.match(/(?<=name:)\s?('|").*?('|")/)
-        
-        {
-          template: template.first,
-          name: (!name.nil? ? name[0].strip.gsub(/("|')/, '') : template.first),
-          version: (template.size > 1 ? template.last : "not found")
-        }
+      @components = raw_components.map do |template_str|
+        template = template_str.strip.gsub(/("|'|,)/, '').split(/(@|#)/)        
+        { template: template.first, version: (template.size > 1 ? template.last : "not found") }
       end
     end
 
@@ -38,7 +31,7 @@ module Kurgan
         releases = Kurgan::GitHub.get_releases(comp[:template])
         if !releases.nil? && releases.any? 
           latest_release = releases.sort_by { |r| r[:tag_name] }.reverse.first
-          comp[:latest_release] = latest_release[:tag_name].light_green
+          comp[:latest_release] = latest_release[:tag_name]
         else
           comp[:latest_release] = 'not found'
         end
@@ -48,8 +41,8 @@ module Kurgan
     def display
       puts Terminal::Table.new(
         :title => "Project: #{@project_name}",
-        :headings => ['Component', 'Name', 'Version', 'Latest Release'], 
-        :rows => @components.map {|comp| [comp[:template], comp[:name], comp[:version], comp[:latest_release]] }
+        :headings => ['Component', 'Version', 'Latest Release'], 
+        :rows => @components.map {|comp| [comp[:template], comp[:version], comp[:latest_release]] }
       )
     end
 
