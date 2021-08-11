@@ -8,6 +8,7 @@ require "kurgan/add"
 require "kurgan/test"
 require "kurgan/list"
 require "kurgan/extend"
+require "kurgan/search"
 
 module Kurgan
   class Cli < Thor
@@ -33,9 +34,11 @@ module Kurgan
     register Kurgan::Test, 'test', 'test [name]', 'Create a new test case for a component'
     tasks["test"].options = Kurgan::Test.class_options
 
-
     register Kurgan::List, 'list', 'list', 'list all components in the onestack'
     tasks["list"].options = Kurgan::List.class_options
+
+    register Kurgan::Search, 'search', 'search [component]', "search for a component and it's release history"
+    tasks["search"].options = Kurgan::Search.class_options
 
   end
 end
