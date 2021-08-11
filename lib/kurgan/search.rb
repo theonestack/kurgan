@@ -1,7 +1,6 @@
 require "thor"
-require 'faraday'
-require 'json'
 require 'terminal-table'
+require 'kurgan/github'
 
 module Kurgan
   class Search < Thor::Group
@@ -9,18 +8,17 @@ module Kurgan
 
     argument :component
 
-    def get_releases
-      url = "https://api.github.com/repos/theonestack/hl-component-#{component}/releases"
-      response = Faraday.get(url, {}, {'Accept' => 'Accept: application/vnd.github.v3+json'})
-      
-      if response.status == 404
-        abort "unable to find component #{component} in theonestack github repositories"
-      elsif response.status != 200
-        abort "error occured retriving details from github for the component"
+    def get_releases    
+      releases = Kurgan::GitHub.get_releases(component)
+      if releases.nil?
+        abort "ERROR: unable to find component in theonestack"
       end
-      
-      releases = JSON.parse(response.body, symbolize_names: true)
-      @rows = releases.map {|release| [release[:tag_name], release[:name], release[:published_at], release[:html_url]]}
+
+      if releases.any?
+        @rows = releases.map {|release| [release[:tag_name], release[:name], release[:published_at], release[:html_url]]}
+      else
+        tags = Kurgan::GitHub.get_tags(component)
+      end
     end
 
     def display

@@ -9,6 +9,7 @@ require "kurgan/test"
 require "kurgan/list"
 require "kurgan/extend"
 require "kurgan/search"
+require "kurgan/inspect"
 
 module Kurgan
   class Cli < Thor
@@ -39,6 +40,9 @@ module Kurgan
 
     register Kurgan::Search, 'search', 'search [component]', "search for a component and it's release history"
     tasks["search"].options = Kurgan::Search.class_options
+
+    register Kurgan::Inspect, 'inspect', 'inspect', "inspect a cfhighlander files of it's components"
+    tasks["inspect"].options = Kurgan::Inspect.class_options
 
   end
 end
