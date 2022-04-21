@@ -25,15 +25,22 @@ module Kurgan
       case options[:type]
       when 'config'
         template('templates/test.yaml.tt', "#{options[:directory]}/#{test_name}.test.yaml")
-        say "created config test case #{options[:directory]}/#{test_name}.test.yaml", :green
       when 'spec'
-        output_file = "#{Dir.pwd}/out/tests/#{test_name}/#{@component_name}.compiled.yaml"
-        if !File.file?(output_file)
-          error "compile cloudformation test output file #{output_file} not found.\nRun `cfhighlander cftest -t #{options[:directory]}/#{test_name}.test.yaml`"
+        if test_name == '*'
+          test_yamls = Dir["tests/*.test.yaml"]
+          tests = test_yamls.map {|test_yaml| test_yaml[/tests\/(.*).test.yaml/, 1]}
+        else
+          tests = [test_name]
         end
-        compiled_test = YAML.load_file("#{Dir.pwd}/out/tests/#{test_name}/#{@component_name}.compiled.yaml")
-        template('templates/test.spec.tt', "spec/#{test_name}_spec.rb", compiled_test)
-        say "created spec test spec/#{test_name}_spec.rb", :green
+
+        tests.each do |name|
+          output_file = "#{Dir.pwd}/out/tests/#{name}/#{@component_name}.compiled.yaml"
+          if !File.file?(output_file)
+            warn "compile cloudformation test output file #{output_file} not found.\nRun `cfhighlander cftest -t #{options[:directory]}/#{name}.test.yaml`"
+          end
+          compiled_test = YAML.load_file("#{Dir.pwd}/out/tests/#{name}/#{@component_name}.compiled.yaml")
+          template('templates/test.spec.tt', "spec/#{name}_spec.rb", {compiled_test: compiled_test, test_name: name})
+        end
       else
         error "#{options[:type]} is not a supported test type yet", :red
       end

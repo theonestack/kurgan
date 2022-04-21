@@ -4,15 +4,15 @@ describe 'compiled component <%= @component_name %>' do
   
   context 'cftest' do
     it 'compiles test' do
-      expect(system("cfhighlander cftest #{@validate} --tests tests/<%= @test_name %>.test.yaml")).to be_truthy
+      expect(system("cfhighlander cftest #{@validate} --tests tests/<%= config[:test_name] %>.test.yaml")).to be_truthy
     end      
   end
   
-  let(:template) { YAML.load_file("#{File.dirname(__FILE__)}/../out/tests/<%= @test_name %>/<%= @component_name %>.compiled.yaml") }
+  let(:template) { YAML.load_file("#{File.dirname(__FILE__)}/../out/tests/<%= config[:test_name] %>/<%= @component_name %>.compiled.yaml") }
   
   context "Resource" do
 
-    <% config['Resources'].each do |resource, details| %>
+    <% config[:compiled_test]['Resources'].each do |resource, details| %>
     context "<%= resource %>" do
       let(:resource) { template["Resources"]["<%= resource %>"] }
 
